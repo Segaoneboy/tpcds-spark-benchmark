@@ -1,2 +1,2 @@
 #!/bin/bash
-./dsgen -scale 50 -dir "./dsta/raw"
+./dsdgen -scale 50 -dir ~/data/raw
