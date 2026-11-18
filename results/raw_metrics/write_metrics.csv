@@ -1,0 +1,11 @@
+task_id,layout,format,codec,write_time_sec,file_count,size_bytes,size_mb,hdfs_path
+T18,small,parquet,snappy,138.315,17,938925565,895.43,hdfs:///user/admin/tpcds_benchmark/data/small/parquet/store_sales
+T19,large,parquet,snappy,154.151,2,673312678,642.12,hdfs:///user/admin/tpcds_benchmark/data/large/parquet/store_sales
+T20,small,orc,snappy,127.361,17,806683791,769.31,hdfs:///user/admin/tpcds_benchmark/data/small/orc/store_sales
+T21,large,orc,snappy,149.191,2,571027691,544.57,hdfs:///user/admin/tpcds_benchmark/data/large/orc/store_sales
+T22,small,avro,snappy,167.3,17,1184344557,1129.48,hdfs:///user/admin/tpcds_benchmark/data/small/avro/store_sales
+T23,large,avro,snappy,215.761,2,901809731,860.03,hdfs:///user/admin/tpcds_benchmark/data/large/avro/store_sales
+T24,small,csv_plain,none,123.238,17,1967079046,1875.95,hdfs:///user/admin/tpcds_benchmark/data/small/csv_plain/store_sales
+T25,large,csv_plain,none,159.155,2,1967073901,1875.95,hdfs:///user/admin/tpcds_benchmark/data/large/csv_plain/store_sales
+T26,small,csv_gz,gzip,257.396,17,858787738,819.0,hdfs:///user/admin/tpcds_benchmark/data/small/csv_gz/store_sales
+T27,large,csv_gz,gzip,364.796,2,660022147,629.45,hdfs:///user/admin/tpcds_benchmark/data/large/csv_gz/store_sales

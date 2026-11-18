@@ -1,0 +1,28 @@
+{
+  "task_id": "T30",
+  "description": "Unified Spark SQL parameters and dataset layout for TPC-DS format benchmark",
+  "hdfs_base_template": "hdfs:///user/{user}/tpcds_benchmark/data",
+  "fixed_spark_sql_conf": {
+    "spark.sql.shuffle.partitions": "16",
+    "spark.sql.adaptive.enabled": "false",
+    "spark.sql.autoBroadcastJoinThreshold": "10485760",
+    "spark.eventLog.enabled": "true"
+  },
+  "benchmark_protocol": {
+    "warmup_runs": 1,
+    "measured_runs": 3,
+    "clear_cache_between_runs": true
+  },
+  "dataset_variants": [
+    {"id": "T18", "layout": "small", "format": "parquet",   "codec": "snappy", "target_files": 16},
+    {"id": "T19", "layout": "large", "format": "parquet",   "codec": "snappy", "target_files": 1},
+    {"id": "T20", "layout": "small", "format": "orc",       "codec": "snappy", "target_files": 16},
+    {"id": "T21", "layout": "large", "format": "orc",       "codec": "snappy", "target_files": 1},
+    {"id": "T22", "layout": "small", "format": "avro",      "codec": "snappy", "target_files": 16},
+    {"id": "T23", "layout": "large", "format": "avro",      "codec": "snappy", "target_files": 1},
+    {"id": "T24", "layout": "small", "format": "csv_plain", "codec": "none",   "target_files": 16},
+    {"id": "T25", "layout": "large", "format": "csv_plain", "codec": "none",   "target_files": 1},
+    {"id": "T26", "layout": "small", "format": "csv_gz",    "codec": "gzip",   "target_files": 16},
+    {"id": "T27", "layout": "large", "format": "csv_gz",    "codec": "gzip",   "target_files": 1}
+  ]
+}
