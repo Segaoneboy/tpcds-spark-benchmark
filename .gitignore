@@ -61,3 +61,7 @@ warehouse/
 .idea/
 .vscode/
 .DS_Store/
+configs/env.local.sh
+jars/*.jar
+results/event_logs/
+__pycache__/
