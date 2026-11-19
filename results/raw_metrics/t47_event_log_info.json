@@ -1,0 +1,7 @@
+{
+  "task_id": "T47",
+  "application_id": "application_1795017174086_0003",
+  "event_log_hdfs_dir": "hdfs:///var/log/spark/apps",
+  "expected_event_log_path": "hdfs:///var/log/spark/apps/application_1795017174086_0003",
+  "fetch_command": "hdfs dfs -get hdfs:///var/log/spark/apps/application_1795017174086_0003 results/event_logs/"
+}

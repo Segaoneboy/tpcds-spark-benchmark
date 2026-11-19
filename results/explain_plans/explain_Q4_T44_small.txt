@@ -1,0 +1,101 @@
+== Physical Plan ==
+* Sort (16)
++- Exchange (15)
+   +- * Project (14)
+      +- * SortMergeJoin FullOuter (13)
+         :- * Sort (6)
+         :  +- * HashAggregate (5)
+         :     +- Exchange (4)
+         :        +- * HashAggregate (3)
+         :           +- * Project (2)
+         :              +- Scan csv  (1)
+         +- * Sort (12)
+            +- * HashAggregate (11)
+               +- Exchange (10)
+                  +- * HashAggregate (9)
+                     +- * Project (8)
+                        +- Scan csv  (7)
+
+
+(1) Scan csv 
+Output [6]: [ss_customer_sk#19089, ss_store_sk#19093, ss_ticket_number#19095, ss_quantity#19096, ss_net_paid#19106, ss_net_profit#19108]
+Batched: false
+Location: InMemoryFileIndex [hdfs://adh-node01.local:8020/user/admin/tpcds_benchmark/data/small/csv_plain/store_sales]
+ReadSchema: struct<ss_customer_sk:int,ss_store_sk:int,ss_ticket_number:int,ss_quantity:int,ss_net_paid:decimal(7,2),ss_net_profit:decimal(7,2)>
+
+(2) Project [codegen id : 1]
+Output [6]: [ss_customer_sk#19089, ss_ticket_number#19095, ss_quantity#19096, ss_net_paid#19106, ss_net_profit#19108, coalesce(ss_store_sk#19093, -1) AS _groupingexpression#19266]
+Input [6]: [ss_customer_sk#19089, ss_store_sk#19093, ss_ticket_number#19095, ss_quantity#19096, ss_net_paid#19106, ss_net_profit#19108]
+
+(3) HashAggregate [codegen id : 1]
+Input [6]: [ss_customer_sk#19089, ss_ticket_number#19095, ss_quantity#19096, ss_net_paid#19106, ss_net_profit#19108, _groupingexpression#19266]
+Keys [1]: [_groupingexpression#19266]
+Functions [7]: [partial_count(1), partial_count(ss_customer_sk#19089), partial_sum(cast(ss_quantity#19096 as bigint)), partial_sum(cast(ss_net_paid#19106 as decimal(18,2))), partial_sum(cast(ss_net_profit#19108 as decimal(18,2))), partial_min(ss_ticket_number#19095), partial_max(ss_ticket_number#19095)]
+Aggregate Attributes [9]: [count#19268L, count#19269L, sum#19270L, sum#19271, isEmpty#19272, sum#19273, isEmpty#19274, min#19275, max#19276]
+Results [10]: [_groupingexpression#19266, count#19277L, count#19278L, sum#19279L, sum#19280, isEmpty#19281, sum#19282, isEmpty#19283, min#19284, max#19285]
+
+(4) Exchange
+Input [10]: [_groupingexpression#19266, count#19277L, count#19278L, sum#19279L, sum#19280, isEmpty#19281, sum#19282, isEmpty#19283, min#19284, max#19285]
+Arguments: hashpartitioning(_groupingexpression#19266, 16), ENSURE_REQUIREMENTS, [plan_id=11688]
+
+(5) HashAggregate [codegen id : 2]
+Input [10]: [_groupingexpression#19266, count#19277L, count#19278L, sum#19279L, sum#19280, isEmpty#19281, sum#19282, isEmpty#19283, min#19284, max#19285]
+Keys [1]: [_groupingexpression#19266]
+Functions [7]: [count(1), count(ss_customer_sk#19089), sum(cast(ss_quantity#19096 as bigint)), sum(cast(ss_net_paid#19106 as decimal(18,2))), sum(cast(ss_net_profit#19108 as decimal(18,2))), min(ss_ticket_number#19095), max(ss_ticket_number#19095)]
+Aggregate Attributes [7]: [count(1)#19252L, count(ss_customer_sk#19089)#19253L, sum(cast(ss_quantity#19096 as bigint))#19254L, sum(cast(ss_net_paid#19106 as decimal(18,2)))#19255, sum(cast(ss_net_profit#19108 as decimal(18,2)))#19256, min(ss_ticket_number#19095)#19257, max(ss_ticket_number#19095)#19258]
+Results [8]: [_groupingexpression#19266 AS store_key#19231, count(1)#19252L AS row_cnt#19232L, count(ss_customer_sk#19089)#19253L AS cust_cnt#19233L, sum(cast(ss_quantity#19096 as bigint))#19254L AS sum_qty#19234L, sum(cast(ss_net_paid#19106 as decimal(18,2)))#19255 AS sum_paid#19235, sum(cast(ss_net_profit#19108 as decimal(18,2)))#19256 AS sum_profit#19236, min(ss_ticket_number#19095)#19257 AS min_ticket#19237, max(ss_ticket_number#19095)#19258 AS max_ticket#19238]
+
+(6) Sort [codegen id : 2]
+Input [8]: [store_key#19231, row_cnt#19232L, cust_cnt#19233L, sum_qty#19234L, sum_paid#19235, sum_profit#19236, min_ticket#19237, max_ticket#19238]
+Arguments: [store_key#19231 ASC NULLS FIRST], false, 0
+
+(7) Scan csv 
+Output [6]: [ss_customer_sk#19135, ss_store_sk#19139, ss_ticket_number#19141, ss_quantity#19142, ss_net_paid#19152, ss_net_profit#19154]
+Batched: false
+Location: InMemoryFileIndex [hdfs://adh-node01.local:8020/user/admin/tpcds_benchmark/data/small/csv_gz/store_sales]
+ReadSchema: struct<ss_customer_sk:int,ss_store_sk:int,ss_ticket_number:int,ss_quantity:int,ss_net_paid:decimal(7,2),ss_net_profit:decimal(7,2)>
+
+(8) Project [codegen id : 3]
+Output [6]: [ss_customer_sk#19135, ss_ticket_number#19141, ss_quantity#19142, ss_net_paid#19152, ss_net_profit#19154, coalesce(ss_store_sk#19139, -1) AS _groupingexpression#19267]
+Input [6]: [ss_customer_sk#19135, ss_store_sk#19139, ss_ticket_number#19141, ss_quantity#19142, ss_net_paid#19152, ss_net_profit#19154]
+
+(9) HashAggregate [codegen id : 3]
+Input [6]: [ss_customer_sk#19135, ss_ticket_number#19141, ss_quantity#19142, ss_net_paid#19152, ss_net_profit#19154, _groupingexpression#19267]
+Keys [1]: [_groupingexpression#19267]
+Functions [7]: [partial_count(1), partial_count(ss_customer_sk#19135), partial_sum(cast(ss_quantity#19142 as bigint)), partial_sum(cast(ss_net_paid#19152 as decimal(18,2))), partial_sum(cast(ss_net_profit#19154 as decimal(18,2))), partial_min(ss_ticket_number#19141), partial_max(ss_ticket_number#19141)]
+Aggregate Attributes [9]: [count#19286L, count#19287L, sum#19288L, sum#19289, isEmpty#19290, sum#19291, isEmpty#19292, min#19293, max#19294]
+Results [10]: [_groupingexpression#19267, count#19295L, count#19296L, sum#19297L, sum#19298, isEmpty#19299, sum#19300, isEmpty#19301, min#19302, max#19303]
+
+(10) Exchange
+Input [10]: [_groupingexpression#19267, count#19295L, count#19296L, sum#19297L, sum#19298, isEmpty#19299, sum#19300, isEmpty#19301, min#19302, max#19303]
+Arguments: hashpartitioning(_groupingexpression#19267, 16), ENSURE_REQUIREMENTS, [plan_id=11698]
+
+(11) HashAggregate [codegen id : 4]
+Input [10]: [_groupingexpression#19267, count#19295L, count#19296L, sum#19297L, sum#19298, isEmpty#19299, sum#19300, isEmpty#19301, min#19302, max#19303]
+Keys [1]: [_groupingexpression#19267]
+Functions [7]: [count(1), count(ss_customer_sk#19135), sum(cast(ss_quantity#19142 as bigint)), sum(cast(ss_net_paid#19152 as decimal(18,2))), sum(cast(ss_net_profit#19154 as decimal(18,2))), min(ss_ticket_number#19141), max(ss_ticket_number#19141)]
+Aggregate Attributes [7]: [count(1)#19259L, count(ss_customer_sk#19135)#19260L, sum(cast(ss_quantity#19142 as bigint))#19261L, sum(cast(ss_net_paid#19152 as decimal(18,2)))#19262, sum(cast(ss_net_profit#19154 as decimal(18,2)))#19263, min(ss_ticket_number#19141)#19264, max(ss_ticket_number#19141)#19265]
+Results [8]: [_groupingexpression#19267 AS store_key#19239, count(1)#19259L AS row_cnt#19240L, count(ss_customer_sk#19135)#19260L AS cust_cnt#19241L, sum(cast(ss_quantity#19142 as bigint))#19261L AS sum_qty#19242L, sum(cast(ss_net_paid#19152 as decimal(18,2)))#19262 AS sum_paid#19243, sum(cast(ss_net_profit#19154 as decimal(18,2)))#19263 AS sum_profit#19244, min(ss_ticket_number#19141)#19264 AS min_ticket#19245, max(ss_ticket_number#19141)#19265 AS max_ticket#19246]
+
+(12) Sort [codegen id : 4]
+Input [8]: [store_key#19239, row_cnt#19240L, cust_cnt#19241L, sum_qty#19242L, sum_paid#19243, sum_profit#19244, min_ticket#19245, max_ticket#19246]
+Arguments: [store_key#19239 ASC NULLS FIRST], false, 0
+
+(13) SortMergeJoin [codegen id : 5]
+Left keys [1]: [store_key#19231]
+Right keys [1]: [store_key#19239]
+Join type: FullOuter
+Join condition: None
+
+(14) Project [codegen id : 5]
+Output [7]: [coalesce(store_key#19231, store_key#19239) AS store_sk#19224, row_cnt#19232L AS csv_rows#19225L, row_cnt#19240L AS csvgz_rows#19226L, (row_cnt#19232L - row_cnt#19240L) AS diff_rows#19227L, (sum_paid#19235 - sum_paid#19243) AS diff_net_paid#19228, (sum_profit#19236 - sum_profit#19244) AS diff_net_profit#19229, CASE WHEN ((((row_cnt#19232L = row_cnt#19240L) AND (cust_cnt#19233L = cust_cnt#19241L)) AND ((sum_qty#19234L = sum_qty#19242L) AND (sum_paid#19235 = sum_paid#19243))) AND (((sum_profit#19236 = sum_profit#19244) AND (min_ticket#19237 = min_ticket#19245)) AND (max_ticket#19238 = max_ticket#19246))) THEN OK ELSE MISMATCH END AS validation_status#19230]
+Input [16]: [store_key#19231, row_cnt#19232L, cust_cnt#19233L, sum_qty#19234L, sum_paid#19235, sum_profit#19236, min_ticket#19237, max_ticket#19238, store_key#19239, row_cnt#19240L, cust_cnt#19241L, sum_qty#19242L, sum_paid#19243, sum_profit#19244, min_ticket#19245, max_ticket#19246]
+
+(15) Exchange
+Input [7]: [store_sk#19224, csv_rows#19225L, csvgz_rows#19226L, diff_rows#19227L, diff_net_paid#19228, diff_net_profit#19229, validation_status#19230]
+Arguments: rangepartitioning(store_sk#19224 ASC NULLS FIRST, 16), ENSURE_REQUIREMENTS, [plan_id=11707]
+
+(16) Sort [codegen id : 6]
+Input [7]: [store_sk#19224, csv_rows#19225L, csvgz_rows#19226L, diff_rows#19227L, diff_net_paid#19228, diff_net_profit#19229, validation_status#19230]
+Arguments: [store_sk#19224 ASC NULLS FIRST], true, 0
+

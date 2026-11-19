@@ -1,0 +1,199 @@
+=== T41 | Q1_full_scan (large/csv_plain, source_partitions=15) ===
+== Physical Plan ==
+* HashAggregate (4)
++- Exchange (3)
+   +- * HashAggregate (2)
+      +- Scan csv  (1)
+
+
+(1) Scan csv 
+Output [9]: [ss_sold_date_sk#2474, ss_item_sk#2476, ss_quantity#2484, ss_wholesale_cost#2485, ss_list_price#2486, ss_sales_price#2487, ss_ext_sales_price#2489, ss_net_paid#2494, ss_net_profit#2496]
+Batched: false
+Location: InMemoryFileIndex [hdfs://adh-node01.local:8020/user/admin/tpcds_benchmark/data/large/csv_plain/store_sales]
+ReadSchema: struct<ss_sold_date_sk:int,ss_item_sk:int,ss_quantity:int,ss_wholesale_cost:decimal(7,2),ss_list_price:decimal(7,2),ss_sales_price:decimal(7,2),ss_ext_sales_price:decimal(7,2),ss_net_paid:decimal(7,2),ss_net_profit:decimal(7,2)>
+
+(2) HashAggregate [codegen id : 1]
+Input [9]: [ss_sold_date_sk#2474, ss_item_sk#2476, ss_quantity#2484, ss_wholesale_cost#2485, ss_list_price#2486, ss_sales_price#2487, ss_ext_sales_price#2489, ss_net_paid#2494, ss_net_profit#2496]
+Keys: []
+Functions [14]: [partial_count(1), partial_count(ss_quantity#2484), partial_count(ss_net_paid#2494), partial_sum(cast(ss_quantity#2484 as bigint)), partial_sum(cast(ss_wholesale_cost#2485 as decimal(18,2))), partial_sum(cast(ss_list_price#2486 as decimal(18,2))), partial_sum(cast(ss_sales_price#2487 as decimal(18,2))), partial_sum(cast(ss_ext_sales_price#2489 as decimal(18,2))), partial_sum(cast(ss_net_paid#2494 as decimal(18,2))), partial_sum(cast(ss_net_profit#2496 as decimal(18,2))), partial_min(ss_sold_date_sk#2474), partial_max(ss_sold_date_sk#2474), partial_min(ss_item_sk#2476), partial_max(ss_item_sk#2476)]
+Aggregate Attributes [20]: [count#2576L, count#2577L, count#2578L, sum#2579L, sum#2580, isEmpty#2581, sum#2582, isEmpty#2583, sum#2584, isEmpty#2585, sum#2586, isEmpty#2587, sum#2588, isEmpty#2589, sum#2590, isEmpty#2591, min#2592, max#2593, min#2594, max#2595]
+Results [20]: [count#2596L, count#2597L, count#2598L, sum#2599L, sum#2600, isEmpty#2601, sum#2602, isEmpty#2603, sum#2604, isEmpty#2605, sum#2606, isEmpty#2607, sum#2608, isEmpty#2609, sum#2610, isEmpty#2611, min#2612, max#2613, min#2614, max#2615]
+
+(3) Exchange
+Input [20]: [count#2596L, count#2597L, count#2598L, sum#2599L, sum#2600, isEmpty#2601, sum#2602, isEmpty#2603, sum#2604, isEmpty#2605, sum#2606, isEmpty#2607, sum#2608, isEmpty#2609, sum#2610, isEmpty#2611, min#2612, max#2613, min#2614, max#2615]
+Arguments: SinglePartition, ENSURE_REQUIREMENTS, [plan_id=2011]
+
+(4) HashAggregate [codegen id : 2]
+Input [20]: [count#2596L, count#2597L, count#2598L, sum#2599L, sum#2600, isEmpty#2601, sum#2602, isEmpty#2603, sum#2604, isEmpty#2605, sum#2606, isEmpty#2607, sum#2608, isEmpty#2609, sum#2610, isEmpty#2611, min#2612, max#2613, min#2614, max#2615]
+Keys: []
+Functions [14]: [count(1), count(ss_quantity#2484), count(ss_net_paid#2494), sum(cast(ss_quantity#2484 as bigint)), sum(cast(ss_wholesale_cost#2485 as decimal(18,2))), sum(cast(ss_list_price#2486 as decimal(18,2))), sum(cast(ss_sales_price#2487 as decimal(18,2))), sum(cast(ss_ext_sales_price#2489 as decimal(18,2))), sum(cast(ss_net_paid#2494 as decimal(18,2))), sum(cast(ss_net_profit#2496 as decimal(18,2))), min(ss_sold_date_sk#2474), max(ss_sold_date_sk#2474), min(ss_item_sk#2476), max(ss_item_sk#2476)]
+Aggregate Attributes [14]: [count(1)#2562L, count(ss_quantity#2484)#2563L, count(ss_net_paid#2494)#2564L, sum(cast(ss_quantity#2484 as bigint))#2565L, sum(cast(ss_wholesale_cost#2485 as decimal(18,2)))#2566, sum(cast(ss_list_price#2486 as decimal(18,2)))#2567, sum(cast(ss_sales_price#2487 as decimal(18,2)))#2568, sum(cast(ss_ext_sales_price#2489 as decimal(18,2)))#2569, sum(cast(ss_net_paid#2494 as decimal(18,2)))#2570, sum(cast(ss_net_profit#2496 as decimal(18,2)))#2571, min(ss_sold_date_sk#2474)#2572, max(ss_sold_date_sk#2474)#2573, min(ss_item_sk#2476)#2574, max(ss_item_sk#2476)#2575]
+Results [14]: [count(1)#2562L AS total_rows#2543L, count(ss_quantity#2484)#2563L AS valid_quantity_rows#2544L, count(ss_net_paid#2494)#2564L AS valid_net_paid_rows#2545L, sum(cast(ss_quantity#2484 as bigint))#2565L AS sum_quantity#2546L, sum(cast(ss_wholesale_cost#2485 as decimal(18,2)))#2566 AS sum_wholesale_cost#2547, sum(cast(ss_list_price#2486 as decimal(18,2)))#2567 AS sum_list_price#2548, sum(cast(ss_sales_price#2487 as decimal(18,2)))#2568 AS sum_sales_price#2549, sum(cast(ss_ext_sales_price#2489 as decimal(18,2)))#2569 AS sum_ext_sales_price#2550, sum(cast(ss_net_paid#2494 as decimal(18,2)))#2570 AS sum_net_paid#2551, sum(cast(ss_net_profit#2496 as decimal(18,2)))#2571 AS sum_net_profit#2552, min(ss_sold_date_sk#2474)#2572 AS min_date_sk#2553, max(ss_sold_date_sk#2474)#2573 AS max_date_sk#2554, min(ss_item_sk#2476)#2574 AS min_item_sk#2555, max(ss_item_sk#2476)#2575 AS max_item_sk#2556]
+
+
+
+=== T42 | Q2_selective (large/csv_plain, source_partitions=15) ===
+== Physical Plan ==
+* Sort (7)
++- Exchange (6)
+   +- * HashAggregate (5)
+      +- Exchange (4)
+         +- * HashAggregate (3)
+            +- * Filter (2)
+               +- Scan csv  (1)
+
+
+(1) Scan csv 
+Output [4]: [ss_sold_date_sk#2474, ss_quantity#2484, ss_sales_price#2487, ss_net_paid#2494]
+Batched: false
+Location: InMemoryFileIndex [hdfs://adh-node01.local:8020/user/admin/tpcds_benchmark/data/large/csv_plain/store_sales]
+PushedFilters: [IsNotNull(ss_sold_date_sk), IsNotNull(ss_sales_price), GreaterThanOrEqual(ss_sold_date_sk,2451545), LessThanOrEqual(ss_sold_date_sk,2451910), GreaterThan(ss_sales_price,50.00), IsNotNull(ss_quantity)]
+ReadSchema: struct<ss_sold_date_sk:int,ss_quantity:int,ss_sales_price:decimal(7,2),ss_net_paid:decimal(7,2)>
+
+(2) Filter [codegen id : 1]
+Input [4]: [ss_sold_date_sk#2474, ss_quantity#2484, ss_sales_price#2487, ss_net_paid#2494]
+Condition : (((((isnotnull(ss_sold_date_sk#2474) AND isnotnull(ss_sales_price#2487)) AND (ss_sold_date_sk#2474 >= 2451545)) AND (ss_sold_date_sk#2474 <= 2451910)) AND (ss_sales_price#2487 > 50.00)) AND isnotnull(ss_quantity#2484))
+
+(3) HashAggregate [codegen id : 1]
+Input [4]: [ss_sold_date_sk#2474, ss_quantity#2484, ss_sales_price#2487, ss_net_paid#2494]
+Keys [1]: [ss_sold_date_sk#2474]
+Functions [5]: [partial_count(1), partial_sum(cast(ss_quantity#2484 as bigint)), partial_sum(cast(ss_sales_price#2487 as decimal(18,2))), partial_sum(cast(ss_net_paid#2494 as decimal(18,2))), partial_avg(cast(ss_sales_price#2487 as decimal(18,4)))]
+Aggregate Attributes [8]: [count#2650L, sum#2651L, sum#2652, isEmpty#2653, sum#2654, isEmpty#2655, sum#2656, count#2657L]
+Results [9]: [ss_sold_date_sk#2474, count#2658L, sum#2659L, sum#2660, isEmpty#2661, sum#2662, isEmpty#2663, sum#2664, count#2665L]
+
+(4) Exchange
+Input [9]: [ss_sold_date_sk#2474, count#2658L, sum#2659L, sum#2660, isEmpty#2661, sum#2662, isEmpty#2663, sum#2664, count#2665L]
+Arguments: hashpartitioning(ss_sold_date_sk#2474, 16), ENSURE_REQUIREMENTS, [plan_id=2057]
+
+(5) HashAggregate [codegen id : 2]
+Input [9]: [ss_sold_date_sk#2474, count#2658L, sum#2659L, sum#2660, isEmpty#2661, sum#2662, isEmpty#2663, sum#2664, count#2665L]
+Keys [1]: [ss_sold_date_sk#2474]
+Functions [5]: [count(1), sum(cast(ss_quantity#2484 as bigint)), sum(cast(ss_sales_price#2487 as decimal(18,2))), sum(cast(ss_net_paid#2494 as decimal(18,2))), avg(cast(ss_sales_price#2487 as decimal(18,4)))]
+Aggregate Attributes [5]: [count(1)#2645L, sum(cast(ss_quantity#2484 as bigint))#2646L, sum(cast(ss_sales_price#2487 as decimal(18,2)))#2647, sum(cast(ss_net_paid#2494 as decimal(18,2)))#2648, avg(cast(ss_sales_price#2487 as decimal(18,4)))#2649]
+Results [6]: [ss_sold_date_sk#2474, count(1)#2645L AS filtered_row_count#2635L, sum(cast(ss_quantity#2484 as bigint))#2646L AS sum_quantity#2636L, sum(cast(ss_sales_price#2487 as decimal(18,2)))#2647 AS sum_sales_price#2637, sum(cast(ss_net_paid#2494 as decimal(18,2)))#2648 AS sum_net_paid#2638, avg(cast(ss_sales_price#2487 as decimal(18,4)))#2649 AS avg_sales_price#2639]
+
+(6) Exchange
+Input [6]: [ss_sold_date_sk#2474, filtered_row_count#2635L, sum_quantity#2636L, sum_sales_price#2637, sum_net_paid#2638, avg_sales_price#2639]
+Arguments: rangepartitioning(ss_sold_date_sk#2474 ASC NULLS FIRST, 16), ENSURE_REQUIREMENTS, [plan_id=2061]
+
+(7) Sort [codegen id : 3]
+Input [6]: [ss_sold_date_sk#2474, filtered_row_count#2635L, sum_quantity#2636L, sum_sales_price#2637, sum_net_paid#2638, avg_sales_price#2639]
+Arguments: [ss_sold_date_sk#2474 ASC NULLS FIRST], true, 0
+
+
+
+=== T43 | Q3_join_item (large/csv_plain, source_partitions=15) ===
+== Physical Plan ==
+* Sort (18)
++- Exchange (17)
+   +- * HashAggregate (16)
+      +- Exchange (15)
+         +- * HashAggregate (14)
+            +- * HashAggregate (13)
+               +- Exchange (12)
+                  +- * HashAggregate (11)
+                     +- * Project (10)
+                        +- * BroadcastHashJoin Inner BuildRight (9)
+                           :- * Project (3)
+                           :  +- * Filter (2)
+                           :     +- Scan csv  (1)
+                           +- BroadcastExchange (8)
+                              +- * Project (7)
+                                 +- * Filter (6)
+                                    +- * ColumnarToRow (5)
+                                       +- Scan parquet  (4)
+
+
+(1) Scan csv 
+Output [7]: [ss_sold_date_sk#2474, ss_item_sk#2476, ss_ticket_number#2483, ss_quantity#2484, ss_ext_sales_price#2489, ss_net_paid#2494, ss_net_profit#2496]
+Batched: false
+Location: InMemoryFileIndex [hdfs://adh-node01.local:8020/user/admin/tpcds_benchmark/data/large/csv_plain/store_sales]
+PushedFilters: [IsNotNull(ss_sold_date_sk), IsNotNull(ss_item_sk)]
+ReadSchema: struct<ss_sold_date_sk:int,ss_item_sk:int,ss_ticket_number:int,ss_quantity:int,ss_ext_sales_price:decimal(7,2),ss_net_paid:decimal(7,2),ss_net_profit:decimal(7,2)>
+
+(2) Filter [codegen id : 2]
+Input [7]: [ss_sold_date_sk#2474, ss_item_sk#2476, ss_ticket_number#2483, ss_quantity#2484, ss_ext_sales_price#2489, ss_net_paid#2494, ss_net_profit#2496]
+Condition : (isnotnull(ss_sold_date_sk#2474) AND isnotnull(ss_item_sk#2476))
+
+(3) Project [codegen id : 2]
+Output [6]: [ss_item_sk#2476, ss_ticket_number#2483, ss_quantity#2484, ss_ext_sales_price#2489, ss_net_paid#2494, ss_net_profit#2496]
+Input [7]: [ss_sold_date_sk#2474, ss_item_sk#2476, ss_ticket_number#2483, ss_quantity#2484, ss_ext_sales_price#2489, ss_net_paid#2494, ss_net_profit#2496]
+
+(4) Scan parquet 
+Output [3]: [i_item_sk#63, i_class#73, i_category#75]
+Batched: true
+Location: InMemoryFileIndex [hdfs://adh-node01.local:8020/user/admin/tpcds_benchmark/data/dimensions/item]
+PushedFilters: [IsNotNull(i_item_sk)]
+ReadSchema: struct<i_item_sk:int,i_class:string,i_category:string>
+
+(5) ColumnarToRow [codegen id : 1]
+Input [3]: [i_item_sk#63, i_class#73, i_category#75]
+
+(6) Filter [codegen id : 1]
+Input [3]: [i_item_sk#63, i_class#73, i_category#75]
+Condition : isnotnull(i_item_sk#63)
+
+(7) Project [codegen id : 1]
+Output [3]: [i_item_sk#63, staticinvoke(class org.apache.spark.sql.catalyst.util.CharVarcharCodegenUtils, StringType, readSidePadding, i_class#73, 50, true, false, true) AS i_class#87, staticinvoke(class org.apache.spark.sql.catalyst.util.CharVarcharCodegenUtils, StringType, readSidePadding, i_category#75, 50, true, false, true) AS i_category#88]
+Input [3]: [i_item_sk#63, i_class#73, i_category#75]
+
+(8) BroadcastExchange
+Input [3]: [i_item_sk#63, i_class#87, i_category#88]
+Arguments: HashedRelationBroadcastMode(List(cast(input[0, int, true] as bigint)),false), [plan_id=2162]
+
+(9) BroadcastHashJoin [codegen id : 2]
+Left keys [1]: [ss_item_sk#2476]
+Right keys [1]: [i_item_sk#63]
+Join type: Inner
+Join condition: None
+
+(10) Project [codegen id : 2]
+Output [7]: [ss_ticket_number#2483, ss_quantity#2484, ss_ext_sales_price#2489, ss_net_paid#2494, ss_net_profit#2496, coalesce(i_category#88, UNKNOWN_CATEGORY) AS _groupingexpression#2706, coalesce(i_class#87, UNKNOWN_CLASS) AS _groupingexpression#2707]
+Input [9]: [ss_item_sk#2476, ss_ticket_number#2483, ss_quantity#2484, ss_ext_sales_price#2489, ss_net_paid#2494, ss_net_profit#2496, i_item_sk#63, i_class#87, i_category#88]
+
+(11) HashAggregate [codegen id : 2]
+Input [7]: [ss_ticket_number#2483, ss_quantity#2484, ss_ext_sales_price#2489, ss_net_paid#2494, ss_net_profit#2496, _groupingexpression#2706, _groupingexpression#2707]
+Keys [3]: [_groupingexpression#2706, _groupingexpression#2707, ss_ticket_number#2483]
+Functions [5]: [partial_count(1), partial_sum(cast(ss_quantity#2484 as bigint)), partial_sum(cast(ss_ext_sales_price#2489 as decimal(18,2))), partial_sum(cast(ss_net_paid#2494 as decimal(18,2))), partial_sum(cast(ss_net_profit#2496 as decimal(18,2)))]
+Aggregate Attributes [5]: [count(1)#2700L, sum(cast(ss_quantity#2484 as bigint))#2702L, sum(cast(ss_ext_sales_price#2489 as decimal(18,2)))#2703, sum(cast(ss_net_paid#2494 as decimal(18,2)))#2704, sum(cast(ss_net_profit#2496 as decimal(18,2)))#2705]
+Results [11]: [_groupingexpression#2706, _groupingexpression#2707, ss_ticket_number#2483, count#2709L, sum#2711L, sum#2714, isEmpty#2715, sum#2718, isEmpty#2719, sum#2722, isEmpty#2723]
+
+(12) Exchange
+Input [11]: [_groupingexpression#2706, _groupingexpression#2707, ss_ticket_number#2483, count#2709L, sum#2711L, sum#2714, isEmpty#2715, sum#2718, isEmpty#2719, sum#2722, isEmpty#2723]
+Arguments: hashpartitioning(_groupingexpression#2706, _groupingexpression#2707, ss_ticket_number#2483, 16), ENSURE_REQUIREMENTS, [plan_id=2168]
+
+(13) HashAggregate [codegen id : 3]
+Input [11]: [_groupingexpression#2706, _groupingexpression#2707, ss_ticket_number#2483, count#2709L, sum#2711L, sum#2714, isEmpty#2715, sum#2718, isEmpty#2719, sum#2722, isEmpty#2723]
+Keys [3]: [_groupingexpression#2706, _groupingexpression#2707, ss_ticket_number#2483]
+Functions [5]: [merge_count(1), merge_sum(cast(ss_quantity#2484 as bigint)), merge_sum(cast(ss_ext_sales_price#2489 as decimal(18,2))), merge_sum(cast(ss_net_paid#2494 as decimal(18,2))), merge_sum(cast(ss_net_profit#2496 as decimal(18,2)))]
+Aggregate Attributes [5]: [count(1)#2700L, sum(cast(ss_quantity#2484 as bigint))#2702L, sum(cast(ss_ext_sales_price#2489 as decimal(18,2)))#2703, sum(cast(ss_net_paid#2494 as decimal(18,2)))#2704, sum(cast(ss_net_profit#2496 as decimal(18,2)))#2705]
+Results [11]: [_groupingexpression#2706, _groupingexpression#2707, ss_ticket_number#2483, count#2709L, sum#2711L, sum#2714, isEmpty#2715, sum#2718, isEmpty#2719, sum#2722, isEmpty#2723]
+
+(14) HashAggregate [codegen id : 3]
+Input [11]: [_groupingexpression#2706, _groupingexpression#2707, ss_ticket_number#2483, count#2709L, sum#2711L, sum#2714, isEmpty#2715, sum#2718, isEmpty#2719, sum#2722, isEmpty#2723]
+Keys [2]: [_groupingexpression#2706, _groupingexpression#2707]
+Functions [6]: [merge_count(1), merge_sum(cast(ss_quantity#2484 as bigint)), merge_sum(cast(ss_ext_sales_price#2489 as decimal(18,2))), merge_sum(cast(ss_net_paid#2494 as decimal(18,2))), merge_sum(cast(ss_net_profit#2496 as decimal(18,2))), partial_count(distinct ss_ticket_number#2483)]
+Aggregate Attributes [6]: [count(1)#2700L, sum(cast(ss_quantity#2484 as bigint))#2702L, sum(cast(ss_ext_sales_price#2489 as decimal(18,2)))#2703, sum(cast(ss_net_paid#2494 as decimal(18,2)))#2704, sum(cast(ss_net_profit#2496 as decimal(18,2)))#2705, count(ss_ticket_number#2483)#2701L]
+Results [11]: [_groupingexpression#2706, _groupingexpression#2707, count#2709L, sum#2711L, sum#2714, isEmpty#2715, sum#2718, isEmpty#2719, sum#2722, isEmpty#2723, count#2726L]
+
+(15) Exchange
+Input [11]: [_groupingexpression#2706, _groupingexpression#2707, count#2709L, sum#2711L, sum#2714, isEmpty#2715, sum#2718, isEmpty#2719, sum#2722, isEmpty#2723, count#2726L]
+Arguments: hashpartitioning(_groupingexpression#2706, _groupingexpression#2707, 16), ENSURE_REQUIREMENTS, [plan_id=2173]
+
+(16) HashAggregate [codegen id : 4]
+Input [11]: [_groupingexpression#2706, _groupingexpression#2707, count#2709L, sum#2711L, sum#2714, isEmpty#2715, sum#2718, isEmpty#2719, sum#2722, isEmpty#2723, count#2726L]
+Keys [2]: [_groupingexpression#2706, _groupingexpression#2707]
+Functions [6]: [count(1), sum(cast(ss_quantity#2484 as bigint)), sum(cast(ss_ext_sales_price#2489 as decimal(18,2))), sum(cast(ss_net_paid#2494 as decimal(18,2))), sum(cast(ss_net_profit#2496 as decimal(18,2))), count(distinct ss_ticket_number#2483)]
+Aggregate Attributes [6]: [count(1)#2700L, sum(cast(ss_quantity#2484 as bigint))#2702L, sum(cast(ss_ext_sales_price#2489 as decimal(18,2)))#2703, sum(cast(ss_net_paid#2494 as decimal(18,2)))#2704, sum(cast(ss_net_profit#2496 as decimal(18,2)))#2705, count(ss_ticket_number#2483)#2701L]
+Results [8]: [_groupingexpression#2706 AS item_category#2687, _groupingexpression#2707 AS item_class#2688, count(1)#2700L AS joined_row_count#2689L, count(ss_ticket_number#2483)#2701L AS unique_tickets#2690L, sum(cast(ss_quantity#2484 as bigint))#2702L AS total_quantity#2691L, sum(cast(ss_ext_sales_price#2489 as decimal(18,2)))#2703 AS total_ext_sales_price#2692, sum(cast(ss_net_paid#2494 as decimal(18,2)))#2704 AS total_net_paid#2693, sum(cast(ss_net_profit#2496 as decimal(18,2)))#2705 AS total_net_profit#2694]
+
+(17) Exchange
+Input [8]: [item_category#2687, item_class#2688, joined_row_count#2689L, unique_tickets#2690L, total_quantity#2691L, total_ext_sales_price#2692, total_net_paid#2693, total_net_profit#2694]
+Arguments: rangepartitioning(item_category#2687 ASC NULLS FIRST, item_class#2688 ASC NULLS FIRST, 16), ENSURE_REQUIREMENTS, [plan_id=2177]
+
+(18) Sort [codegen id : 5]
+Input [8]: [item_category#2687, item_class#2688, joined_row_count#2689L, unique_tickets#2690L, total_quantity#2691L, total_ext_sales_price#2692, total_net_paid#2693, total_net_profit#2694]
+Arguments: [item_category#2687 ASC NULLS FIRST, item_class#2688 ASC NULLS FIRST], true, 0
+
+
+
