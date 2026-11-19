@@ -1,7 +1,7 @@
 # T63: Сводный анализ физических планов EXPLAIN FORMATTED
 
 ## Формат: large/parquet
-- `=== T41 | Q1_full_scan (large/parquet, source_partitions=6) ===`
+- `Q1_full_scan (large/parquet, source_partitions=6)`
 - `+- Scan parquet  (1)`
 - `(1) Scan parquet`
 - `ReadSchema: struct<ss_sold_date_sk:int,ss_item_sk:int,ss_quantity:int,ss_wholesale_cost:decimal(7,2),ss_list_price:decimal(7,2),ss_sales_price:decimal(7,2),ss_ext_sales_price:decimal(7,2),ss_net_paid:decimal(7,2),ss_net_profit:decimal(7,2)>`
@@ -23,7 +23,7 @@
 - `(10) BroadcastHashJoin [codegen id : 2]`
 
 ## Формат: large/orc
-- `=== T41 | Q1_full_scan (large/orc, source_partitions=5) ===`
+- `Q1_full_scan (large/orc, source_partitions=5)`
 - `+- Scan orc  (1)`
 - `(1) Scan orc`
 - `ReadSchema: struct<ss_sold_date_sk:int,ss_item_sk:int,ss_quantity:int,ss_wholesale_cost:decimal(7,2),ss_list_price:decimal(7,2),ss_sales_price:decimal(7,2),ss_ext_sales_price:decimal(7,2),ss_net_paid:decimal(7,2),ss_net_profit:decimal(7,2)>`
@@ -45,7 +45,7 @@
 - `(10) BroadcastHashJoin [codegen id : 2]`
 
 ## Формат: large/avro
-- `=== T41 | Q1_full_scan (large/avro, source_partitions=7) ===`
+- `Q1_full_scan (large/avro, source_partitions=7)`
 - `+- Scan avro  (1)`
 - `(1) Scan avro`
 - `ReadSchema: struct<ss_sold_date_sk:int,ss_item_sk:int,ss_quantity:int,ss_wholesale_cost:decimal(7,2),ss_list_price:decimal(7,2),ss_sales_price:decimal(7,2),ss_ext_sales_price:decimal(7,2),ss_net_paid:decimal(7,2),ss_net_profit:decimal(7,2)>`
@@ -67,7 +67,7 @@
 - `(9) BroadcastHashJoin [codegen id : 2]`
 
 ## Формат: large/csv_plain
-- `=== T41 | Q1_full_scan (large/csv_plain, source_partitions=15) ===`
+- `Q1_full_scan (large/csv_plain, source_partitions=15)`
 - `+- Scan csv  (1)`
 - `(1) Scan csv`
 - `ReadSchema: struct<ss_sold_date_sk:int,ss_item_sk:int,ss_quantity:int,ss_wholesale_cost:decimal(7,2),ss_list_price:decimal(7,2),ss_sales_price:decimal(7,2),ss_ext_sales_price:decimal(7,2),ss_net_paid:decimal(7,2),ss_net_profit:decimal(7,2)>`
@@ -89,7 +89,7 @@
 - `(9) BroadcastHashJoin [codegen id : 2]`
 
 ## Формат: large/csv_gz
-- `=== T41 | Q1_full_scan (large/csv_gz, source_partitions=1) ===`
+- `Q1_full_scan (large/csv_gz, source_partitions=1)`
 - `+- Scan csv  (1)`
 - `(1) Scan csv`
 - `ReadSchema: struct<ss_sold_date_sk:int,ss_item_sk:int,ss_quantity:int,ss_wholesale_cost:decimal(7,2),ss_list_price:decimal(7,2),ss_sales_price:decimal(7,2),ss_ext_sales_price:decimal(7,2),ss_net_paid:decimal(7,2),ss_net_profit:decimal(7,2)>`
