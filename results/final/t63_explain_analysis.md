@@ -1,0 +1,111 @@
+# T63: Сводный анализ физических планов EXPLAIN FORMATTED
+
+## Формат: large/parquet
+- `=== T41 | Q1_full_scan (large/parquet, source_partitions=6) ===`
+- `+- Scan parquet  (1)`
+- `(1) Scan parquet`
+- `ReadSchema: struct<ss_sold_date_sk:int,ss_item_sk:int,ss_quantity:int,ss_wholesale_cost:decimal(7,2),ss_list_price:decimal(7,2),ss_sales_price:decimal(7,2),ss_ext_sales_price:decimal(7,2),ss_net_paid:decimal(7,2),ss_net_profit:decimal(7,2)>`
+- `=== T42 | Q2_selective (large/parquet, source_partitions=6) ===`
+- `+- Scan parquet  (1)`
+- `(1) Scan parquet`
+- `PushedFilters: [IsNotNull(ss_sold_date_sk), IsNotNull(ss_sales_price), GreaterThanOrEqual(ss_sold_date_sk,2451545), LessThanOrEqual(ss_sold_date_sk,2451910), GreaterThan(ss_sales_price,50.00), IsNotNull(ss_quantity)]`
+- `ReadSchema: struct<ss_sold_date_sk:int,ss_quantity:int,ss_sales_price:decimal(7,2),ss_net_paid:decimal(7,2)>`
+- `=== T43 | Q3_join_item (large/parquet, source_partitions=6) ===`
+- `+- * BroadcastHashJoin Inner BuildRight (10)`
+- `:        +- Scan parquet  (1)`
+- `+- Scan parquet  (5)`
+- `(1) Scan parquet`
+- `PushedFilters: [IsNotNull(ss_sold_date_sk), IsNotNull(ss_item_sk)]`
+- `ReadSchema: struct<ss_sold_date_sk:int,ss_item_sk:int,ss_ticket_number:int,ss_quantity:int,ss_ext_sales_price:decimal(7,2),ss_net_paid:decimal(7,2),ss_net_profit:decimal(7,2)>`
+- `(5) Scan parquet`
+- `PushedFilters: [IsNotNull(i_item_sk)]`
+- `ReadSchema: struct<i_item_sk:int,i_class:string,i_category:string>`
+- `(10) BroadcastHashJoin [codegen id : 2]`
+
+## Формат: large/orc
+- `=== T41 | Q1_full_scan (large/orc, source_partitions=5) ===`
+- `+- Scan orc  (1)`
+- `(1) Scan orc`
+- `ReadSchema: struct<ss_sold_date_sk:int,ss_item_sk:int,ss_quantity:int,ss_wholesale_cost:decimal(7,2),ss_list_price:decimal(7,2),ss_sales_price:decimal(7,2),ss_ext_sales_price:decimal(7,2),ss_net_paid:decimal(7,2),ss_net_profit:decimal(7,2)>`
+- `=== T42 | Q2_selective (large/orc, source_partitions=5) ===`
+- `+- Scan orc  (1)`
+- `(1) Scan orc`
+- `PushedFilters: [IsNotNull(ss_sold_date_sk), IsNotNull(ss_sales_price), GreaterThanOrEqual(ss_sold_date_sk,2451545), LessThanOrEqual(ss_sold_date_sk,2451910), GreaterThan(ss_sales_price,50.00), IsNotNull(ss_quantity)]`
+- `ReadSchema: struct<ss_sold_date_sk:int,ss_quantity:int,ss_sales_price:decimal(7,2),ss_net_paid:decimal(7,2)>`
+- `=== T43 | Q3_join_item (large/orc, source_partitions=5) ===`
+- `+- * BroadcastHashJoin Inner BuildRight (10)`
+- `:        +- Scan orc  (1)`
+- `+- Scan parquet  (5)`
+- `(1) Scan orc`
+- `PushedFilters: [IsNotNull(ss_sold_date_sk), IsNotNull(ss_item_sk)]`
+- `ReadSchema: struct<ss_sold_date_sk:int,ss_item_sk:int,ss_ticket_number:int,ss_quantity:int,ss_ext_sales_price:decimal(7,2),ss_net_paid:decimal(7,2),ss_net_profit:decimal(7,2)>`
+- `(5) Scan parquet`
+- `PushedFilters: [IsNotNull(i_item_sk)]`
+- `ReadSchema: struct<i_item_sk:int,i_class:string,i_category:string>`
+- `(10) BroadcastHashJoin [codegen id : 2]`
+
+## Формат: large/avro
+- `=== T41 | Q1_full_scan (large/avro, source_partitions=7) ===`
+- `+- Scan avro  (1)`
+- `(1) Scan avro`
+- `ReadSchema: struct<ss_sold_date_sk:int,ss_item_sk:int,ss_quantity:int,ss_wholesale_cost:decimal(7,2),ss_list_price:decimal(7,2),ss_sales_price:decimal(7,2),ss_ext_sales_price:decimal(7,2),ss_net_paid:decimal(7,2),ss_net_profit:decimal(7,2)>`
+- `=== T42 | Q2_selective (large/avro, source_partitions=7) ===`
+- `+- Scan avro  (1)`
+- `(1) Scan avro`
+- `PushedFilters: [IsNotNull(ss_sold_date_sk), IsNotNull(ss_sales_price), GreaterThanOrEqual(ss_sold_date_sk,2451545), LessThanOrEqual(ss_sold_date_sk,2451910), GreaterThan(ss_sales_price,50.00), IsNotNull(ss_quantity)]`
+- `ReadSchema: struct<ss_sold_date_sk:int,ss_quantity:int,ss_sales_price:decimal(7,2),ss_net_paid:decimal(7,2)>`
+- `=== T43 | Q3_join_item (large/avro, source_partitions=7) ===`
+- `+- * BroadcastHashJoin Inner BuildRight (9)`
+- `:     +- Scan avro  (1)`
+- `+- Scan parquet  (4)`
+- `(1) Scan avro`
+- `PushedFilters: [IsNotNull(ss_sold_date_sk), IsNotNull(ss_item_sk)]`
+- `ReadSchema: struct<ss_sold_date_sk:int,ss_item_sk:int,ss_ticket_number:int,ss_quantity:int,ss_ext_sales_price:decimal(7,2),ss_net_paid:decimal(7,2),ss_net_profit:decimal(7,2)>`
+- `(4) Scan parquet`
+- `PushedFilters: [IsNotNull(i_item_sk)]`
+- `ReadSchema: struct<i_item_sk:int,i_class:string,i_category:string>`
+- `(9) BroadcastHashJoin [codegen id : 2]`
+
+## Формат: large/csv_plain
+- `=== T41 | Q1_full_scan (large/csv_plain, source_partitions=15) ===`
+- `+- Scan csv  (1)`
+- `(1) Scan csv`
+- `ReadSchema: struct<ss_sold_date_sk:int,ss_item_sk:int,ss_quantity:int,ss_wholesale_cost:decimal(7,2),ss_list_price:decimal(7,2),ss_sales_price:decimal(7,2),ss_ext_sales_price:decimal(7,2),ss_net_paid:decimal(7,2),ss_net_profit:decimal(7,2)>`
+- `=== T42 | Q2_selective (large/csv_plain, source_partitions=15) ===`
+- `+- Scan csv  (1)`
+- `(1) Scan csv`
+- `PushedFilters: [IsNotNull(ss_sold_date_sk), IsNotNull(ss_sales_price), GreaterThanOrEqual(ss_sold_date_sk,2451545), LessThanOrEqual(ss_sold_date_sk,2451910), GreaterThan(ss_sales_price,50.00), IsNotNull(ss_quantity)]`
+- `ReadSchema: struct<ss_sold_date_sk:int,ss_quantity:int,ss_sales_price:decimal(7,2),ss_net_paid:decimal(7,2)>`
+- `=== T43 | Q3_join_item (large/csv_plain, source_partitions=15) ===`
+- `+- * BroadcastHashJoin Inner BuildRight (9)`
+- `:     +- Scan csv  (1)`
+- `+- Scan parquet  (4)`
+- `(1) Scan csv`
+- `PushedFilters: [IsNotNull(ss_sold_date_sk), IsNotNull(ss_item_sk)]`
+- `ReadSchema: struct<ss_sold_date_sk:int,ss_item_sk:int,ss_ticket_number:int,ss_quantity:int,ss_ext_sales_price:decimal(7,2),ss_net_paid:decimal(7,2),ss_net_profit:decimal(7,2)>`
+- `(4) Scan parquet`
+- `PushedFilters: [IsNotNull(i_item_sk)]`
+- `ReadSchema: struct<i_item_sk:int,i_class:string,i_category:string>`
+- `(9) BroadcastHashJoin [codegen id : 2]`
+
+## Формат: large/csv_gz
+- `=== T41 | Q1_full_scan (large/csv_gz, source_partitions=1) ===`
+- `+- Scan csv  (1)`
+- `(1) Scan csv`
+- `ReadSchema: struct<ss_sold_date_sk:int,ss_item_sk:int,ss_quantity:int,ss_wholesale_cost:decimal(7,2),ss_list_price:decimal(7,2),ss_sales_price:decimal(7,2),ss_ext_sales_price:decimal(7,2),ss_net_paid:decimal(7,2),ss_net_profit:decimal(7,2)>`
+- `=== T42 | Q2_selective (large/csv_gz, source_partitions=1) ===`
+- `+- Scan csv  (1)`
+- `(1) Scan csv`
+- `PushedFilters: [IsNotNull(ss_sold_date_sk), IsNotNull(ss_sales_price), GreaterThanOrEqual(ss_sold_date_sk,2451545), LessThanOrEqual(ss_sold_date_sk,2451910), GreaterThan(ss_sales_price,50.00), IsNotNull(ss_quantity)]`
+- `ReadSchema: struct<ss_sold_date_sk:int,ss_quantity:int,ss_sales_price:decimal(7,2),ss_net_paid:decimal(7,2)>`
+- `=== T43 | Q3_join_item (large/csv_gz, source_partitions=1) ===`
+- `+- * BroadcastHashJoin Inner BuildRight (9)`
+- `:     +- Scan csv  (1)`
+- `+- Scan parquet  (4)`
+- `(1) Scan csv`
+- `PushedFilters: [IsNotNull(ss_sold_date_sk), IsNotNull(ss_item_sk)]`
+- `ReadSchema: struct<ss_sold_date_sk:int,ss_item_sk:int,ss_ticket_number:int,ss_quantity:int,ss_ext_sales_price:decimal(7,2),ss_net_paid:decimal(7,2),ss_net_profit:decimal(7,2)>`
+- `(4) Scan parquet`
+- `PushedFilters: [IsNotNull(i_item_sk)]`
+- `ReadSchema: struct<i_item_sk:int,i_class:string,i_category:string>`
+- `(9) BroadcastHashJoin [codegen id : 2]`
